@@ -1,28 +1,24 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.User;
+import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
-@RequestMapping("/api/users")
-public class DemoController {
+@RequestMapping("/api")
+public class UserController {
 
-    private final UserRepository userRepo;
+    private final UserRepository userRepository;
 
-    public DemoController(UserRepository userRepo) {
-        this.userRepo = userRepo;
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    @GetMapping
-    public Flux<User> all() {
-        return userRepo.findAll();
-    }
-
-    @PostMapping
-    public Mono<User> create(@RequestBody User user) {
-        return userRepo.save(user);
+    @GetMapping("/users")
+    public Flux<User> list() {
+        return userRepository.findAll();
     }
 }

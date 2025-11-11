@@ -1,9 +1,13 @@
 package com.example.demo.repository;
 
-import com.example.demo.domain.User;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import com.example.demo.model.User;
+import org.springframework.data.r2dbc.repository.R2dbcRepository;
+import org.springframework.data.repository.query.Param;
 import reactor.core.publisher.Flux;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepository extends ReactiveCrudRepository<User, Long> {
-    Flux<User> findByName(String name);
+@Repository
+public interface UserRepository extends R2dbcRepository<User, Long> {
+
+    Flux<User> findByName(@Param("name") String name);
 }

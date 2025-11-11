@@ -1,40 +1,36 @@
 plugins {
-    id 'java'
-    id 'org.springframework.boot' version '3.1.2'
-    id 'io.spring.dependency-management' version '1.1.4'
+    id("org.springframework.boot") version("3.1.0")
+    id("io.spring.dependency-management") version("1.1.0")
+    id("application")
+    java
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '21'
+sourceCompatibility = '17'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    // Spring Boot starters
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
+    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+    implementation("io.r2dbc:r2dbc-h2:0.8.2.RELEASE")
+    implementation("com.h2database:h2:2.1.214")
 
-    // Ethereum
-    implementation 'org.web3j:core:4.10.0'
-    implementation 'org.web3j:abi:4.10.0'
-
-    // R2DBC MySQL driver
-    implementation 'io.r2dbc:r2dbc-mysql:1.0.0.RELEASE'
-
-    // Coroutines & Reactor
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-reactor'
-
-    // Testing
-    testImplementation 'org.springframework.boot:spring-boot-starter-test' {
-        exclude group: 'org.junit.vintage'
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: "org.junit.vintage", module: "junit-vintage-engine"
     }
-    testImplementation 'io.projectreactor:reactor-test'
+    testImplementation("io.projectreactor:reactor-test")
 }
 
-tasks.named('test') {
+tasks.withType(Test) {
     useJUnitPlatform()
+}
+
+application {
+    applicationName = 'new-project'
+    mainClass = "com.example.demo.DemoApplication"
 }
