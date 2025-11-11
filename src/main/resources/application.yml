@@ -1,0 +1,11 @@
+spring:
+  r2dbc:
+    url: ${R2DBC_URL}
+    username: ${R2DBC_USER}
+    password: ${R2DBC_PASSWORD}
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+  data:
+    web3j:
+      rpc-url: ${WEB3J_RPC_URL}

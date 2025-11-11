@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: demo
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: redis:7
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  eth-node:
+    image: ethereum/client-go
+    command: --dev
+    ports:
+      - "8545:8545"
+
+  app:
+    build: .
+    depends_on:
+      - mysql
+      - redis
+      - eth-node
+    environment:
+      R2DBC_URL: r2dbc:mysql://mysql:3306/demo
+      R2DBC_USER: root
+      R2DBC_PASSWORD: root
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      WEB3J_RPC_URL: http://eth-node:8545
+    ports:
+      - "8080:8080"
