@@ -33,15 +33,6 @@ services:
     volumes:
       - redis-data:/data
 
-  ethereum:
-    image: ghcr.io/nomicfoundation/geth:latest   # you can also use nethermind/nethermind
-    container_name: ethereum
-    restart: unless-stopped
-    command: ["--http", "--http.addr", "0.0.0.0", "--http.port", "8545",
-              "--http.api", "personal,eth,web3,net,txpool"]
-    ports:
-      - "8545:8545"
-
   # Optional: your Spring‑Boot micro‑service
   app:
     build: .
@@ -50,14 +41,12 @@ services:
     depends_on:
       - mysql
       - redis
-      - ethereum
     environment:
       # default values – these can be overridden in an .env file
       R2DBC_URL: r2dbc:mysql://mysql:3306/demo
       R2DBC_USERNAME: demo
       R2DBC_PASSWORD: demo
       REDIS_URL: redis://redis:6379/0
-      ETHEREUM_RPC_URL: http://ethereum:8545
     ports:
       - "8080:8080"
 

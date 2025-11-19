@@ -6,9 +6,7 @@ spring:
   redis:
     host: ${REDIS_HOST}
     port: ${REDIS_PORT}
-  data:
-    web3j:
-      rpc-url: ${WEB3J_RPC_URL}
+
 jwt:
   secret: "CHANGE_ME_TO_A_SECURE_RANDOM_SECRET"
   expirationMs: 86400000   # 1 day
