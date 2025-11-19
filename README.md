@@ -13,8 +13,6 @@ A small, **reactive** Spring Boot application that shows how to combine:
 
 It serves as a reference for building a modern micro‑service that touches a relational DB, an in‑memory cache, and a blockchain network—all in a single, lightweight JAR.
 
-> *The source code is kept in the `src` directory (you already have a `DemoApplication.kt` and an `application.yml` with the necessary configuration).*
-
 ---
 
 ## Prerequisites
@@ -29,7 +27,6 @@ If you don't want to run Docker Compose, you must have:
 
 - A running MySQL 8 instance (`demo/demo` database, user `demo` / password `demo` by default).
 - A running Redis instance.
-- An Ethereum JSON‑RPC endpoint (default `http://host.docker.internal:8545`).
 
 ---
 
@@ -44,7 +41,6 @@ The Docker Compose setup overrides the defaults via environment variables:
 | `R2DBC_USERNAME` | MySQL user | `demo` |
 | `R2DBC_PASSWORD` | MySQL password | `demo` |
 | `REDIS_URL` | Redis URL | `redis://localhost:6379/0` |
-| `ETHEREUM_RPC_URL` | Ethereum node JSON‑RPC | `http://host.docker.internal:8545` |
 
 You can override any of these by exporting them in your shell or by editing the `.env` file used by Docker Compose.
 
