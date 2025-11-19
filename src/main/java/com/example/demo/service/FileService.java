@@ -1,3 +1,5 @@
+package com.example.demo.service;
+
 // FileService.java
 @Service
 public class FileService {

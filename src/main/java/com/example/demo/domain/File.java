@@ -1,3 +1,5 @@
+package com.example.demo.domain;
+
 // File.java
 @Entity
 @Table(name = "files")

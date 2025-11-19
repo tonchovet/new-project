@@ -1,3 +1,5 @@
+package com.example.demo.controller;
+
 // FileController.java
 @RestController
 @RequestMapping("/api/files")
