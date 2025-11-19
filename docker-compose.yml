@@ -1,39 +1,66 @@
-version: "3.9"
+# docker-compose.yml
+# Compose v3.8 is fully supported by Docker Desktop on Windows 10
+# Feel free to rename this file or place it in the project root
 
 services:
+
   mysql:
     image: mysql:8
+    container_name: mysql
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: demo
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: demo
+      MYSQL_USER: demo
+      MYSQL_PASSWORD: demo
     ports:
       - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
   redis:
-    image: redis:7
+    image: redis:7.2
+    container_name: redis
     restart: unless-stopped
     ports:
       - "6379:6379"
+    volumes:
+      - redis-data:/data
 
-  eth-node:
-    image: ethereum/client-go
-    command: --dev
+  ethereum:
+    image: ghcr.io/nomicfoundation/geth:latest   # you can also use nethermind/nethermind
+    container_name: ethereum
+    restart: unless-stopped
+    command: ["--http", "--http.addr", "0.0.0.0", "--http.port", "8545",
+              "--http.api", "personal,eth,web3,net,txpool"]
     ports:
       - "8545:8545"
 
+  # Optional: your Spring‑Boot micro‑service
   app:
     build: .
+    container_name: demo-app
+    restart: unless-stopped
     depends_on:
       - mysql
       - redis
-      - eth-node
+      - ethereum
     environment:
+      # default values – these can be overridden in an .env file
       R2DBC_URL: r2dbc:mysql://mysql:3306/demo
-      R2DBC_USER: root
-      R2DBC_PASSWORD: root
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      WEB3J_RPC_URL: http://eth-node:8545
+      R2DBC_USERNAME: demo
+      R2DBC_PASSWORD: demo
+      REDIS_URL: redis://redis:6379/0
+      ETHEREUM_RPC_URL: http://ethereum:8545
     ports:
       - "8080:8080"
+
+volumes:
+  mysql-data:
+  redis-data:
