@@ -1,53 +1,64 @@
-# Demo Application
+# demo-project
 
-## What Is This?
+## Overview
 
-A small, **reactive** Spring Boot application that shows how to combine:
-
-| Layer | Tool | Purpose |
-|-------|------|---------|
-| **Persistence** | MySQL 8 + R2DBC | Store user/account data reactively |
-| **Caching** | Redis | Cache frequently read data |
-| **Blockchain** | Web3j | Interact with a local Ethereum node (Ganache, Geth, etc.) |
-| **Web API** | Spring WebFlux | Expose non‑blocking REST endpoints |
-
-It serves as a reference for building a modern micro‑service that touches a relational DB, an in‑memory cache, and a blockchain network—all in a single, lightweight JAR.
-
----
+This project implements the backend for a public works social network. It is built using Spring Boot 3.x, Java 17, Maven, and Docker. Redis is used for fast in‑memory data operations and MySQL is an optional relational database for persistent storage.
 
 ## Prerequisites
 
-| Item | Minimum Version |
-|------|-----------------|
-| JDK | **Java 21** (the app is built with JDK 21) |
-| Maven | **3.9.x** or newer |
-| Docker & Docker Compose | *Optional* – for local dev environment |
+- Docker & Docker Compose
+- Java 17
+- Maven
 
-If you don't want to run Docker Compose, you must have:
+## Getting Started
 
-- A running MySQL 8 instance (`demo/demo` database, user `demo` / password `demo` by default).
-- A running Redis instance.
+1. **Build the application**
 
----
+   ```bash
+   mvn clean package
+   ```
+
+2. **Run with Docker Compose**
+
+   ```bash
+   docker compose up --build
+   ```
+
+   The API will be available at <http://localhost:8080>.
+
+3. **Run locally (without Docker)**
+
+   ```bash
+   mvn spring-boot:run
+   ```
+
+## Project Structure
+
+-  – Main source code
+-  – Configuration files
+-  – Unit tests
 
 ## Configuration
 
-The application reads configuration from `src/main/resources/application.yml`.  
-The Docker Compose setup overrides the defaults via environment variables:
+The application uses  as the default configuration file. You can override settings by creating an  or .
 
-| Variable | Meaning | Default |
-|----------|---------|---------|
-| `R2DBC_URL` | R2DBC connection string for MySQL | `r2dbc:mysql://localhost:3306/demo` |
-| `R2DBC_USERNAME` | MySQL user | `demo` |
-| `R2DBC_PASSWORD` | MySQL password | `demo` |
-| `REDIS_URL` | Redis URL | `redis://localhost:6379/0` |
+## Docker
 
-You can override any of these by exporting them in your shell or by editing the `.env` file used by Docker Compose.
+The Dockerfile follows a multi‑stage build pattern for optimal image size. The  defines services for the application, Redis, and MySQL.
 
----
+## Development
 
-## Building the Project
+- Use Lombok for reducing boilerplate.
+- Use Spring Data JPA for database interactions.
+- Use Spring Data Redis for caching and messaging.
+- Use Spring Security for authentication and authorization.
 
-```bash
-# Clean, compile, and create an executable jar (skipping tests)
-mvn clean package -DskipTests
+Feel free to extend the skeleton with entities, repositories, services, and controllers as needed.
+
+## Contributing
+
+Pull requests are welcome! Please open an issue first to discuss any major changes.
+
+## License
+
+MIT

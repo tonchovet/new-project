@@ -1,55 +1,33 @@
-# docker-compose.yml
-# Compose v3.8 is fully supported by Docker Desktop on Windows 10
-# Feel free to rename this file or place it in the project root
+version: "3.8"
 
 services:
+  app:
+    build: .
+    container_name: demo-project-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+      - mysql
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    restart: unless-stopped
+
+  redis:
+    image: redis:7
+    container_name: demo-project-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
 
   mysql:
     image: mysql:8
-    container_name: mysql
-    restart: unless-stopped
+    container_name: demo-project-mysql
     environment:
+      MYSQL_DATABASE: publicworks
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: demo
-      MYSQL_USER: demo
-      MYSQL_PASSWORD: demo
+      MYSQL_USER: pw
+      MYSQL_PASSWORD: pw
     ports:
       - "3306:3306"
-    volumes:
-      - mysql-data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 30s
-
-  redis:
-    image: redis:7.2
-    container_name: redis
     restart: unless-stopped
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
-
-  # Optional: your Spring‑Boot micro‑service
-  app:
-    build: .
-    container_name: demo-app
-    restart: unless-stopped
-    depends_on:
-      - mysql
-      - redis
-    environment:
-      # default values – these can be overridden in an .env file
-      R2DBC_URL: r2dbc:mysql://mysql:3306/demo
-      R2DBC_USERNAME: demo
-      R2DBC_PASSWORD: demo
-      REDIS_URL: redis://redis:6379/0
-    ports:
-      - "8080:8080"
-
-volumes:
-  mysql-data:
-  redis-data:

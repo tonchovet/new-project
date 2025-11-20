@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/publicworks?useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  redis:
+    host: localhost
+    port: 6379
