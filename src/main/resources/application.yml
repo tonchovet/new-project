@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: demo-project
+    name: demo
   datasource:
     url: jdbc:mysql://mysql:3306/publicworks?useSSL=false&allowPublicKeyRetrieval=true
     username: pw

@@ -6,9 +6,11 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.WebFilter;
+import org.springframework.web.server.WebFilter;
+
+import com.example.demo.repository.UserRepository;
+
 import reactor.core.publisher.Mono;
-import tonchovet.demo.repository.UserRepository;
 
 import java.util.List;
 
@@ -44,11 +46,25 @@ public class SecurityConfig {
 
             if (username != null) {
                 return userRepository.findByUsername(username)
-                        .map(user -> new UsernamePasswordAuthenticationToken(
-                                user.getUsername(), null, List.of()))
-                        .flatMap(auth -> chain.filter(exchange))
-                        .switchIfEmpty(Mono.error(
-                                new RuntimeException("User not found")));
+                    .flatMap(user -> {
+                        if (jwtProvider.validateToken(token, user.getUsername())) {
+                            UsernamePasswordAuthenticationToken authToken =
+                                new UsernamePasswordAuthenticationToken(
+                                    user.getUsername(),
+                                    null,
+                                    List.of() // Authorities can be set here
+                                );
+                            return chain.filter(exchange)
+                                .contextWrite(ctx -> ctx.put(
+                                    org.springframework.security.core.context.ReactiveSecurityContextHolder.
+                                        SECURITY_CONTEXT_KEY,
+                                    org.springframework.security.core.context.SecurityContextImpl.
+                                        fromAuthentication(authToken)
+                                ));
+                        } else {
+                            return chain.filter(exchange);
+                        }
+                    });
             }
 
             // no valid token – continue without authentication

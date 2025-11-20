@@ -1,4 +1,4 @@
-package com.example.demo-project.config;
+package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,12 +11,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/public/**").permitAll()
                 .anyRequest().authenticated()
             )
-            .httpBasic(); // For simplicity; replace with JWT or OAuth2 in production
+            .httpBasic(org.springframework.security.config.Customizer.withDefaults()); // For simplicity; replace with JWT or OAuth2 in production
         return http.build();
     }
 }

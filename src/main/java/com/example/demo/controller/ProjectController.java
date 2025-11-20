@@ -1,8 +1,8 @@
-package com.example.demo-project.controller;
+package com.example.demo.controller;
 
-import com.example.demo-project.dto.ProjectDto;
-import com.example.demo-project.model.Project;
-import com.example.demo-project.service.ProjectService;
+import com.example.demo.dto.ProjectDto;
+import com.example.demo.model.Project;
+import com.example.demo.service.ProjectService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

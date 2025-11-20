@@ -1,7 +1,7 @@
-package com.example.demo-project;
+package com.example.demo;
 
-import com.example.demo-project.controller.ProjectController;
-import com.example.demo-project.service.ProjectService;
+import com.example.demo.controller.ProjectController;
+import com.example.demo.service.ProjectService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
